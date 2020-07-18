@@ -54,14 +54,15 @@
         overflow-y: auto;
         position: fixed;
         height: 100%;
-        left: 175px;
-        right: 175px;
+        left: 174px;
+        right: 174px;
         top: 0;
     }
     
     .article .markdown {
-        padding-top: 60px;
-        padding-bottom: 60px;
+        border-left: 1px solid rgba(0, 0, 0, 0.1);
+        border-right: 1px solid rgba(0, 0, 0, 0.1);
+        padding: 60px 30px;
         width: 800px;
         margin: 0 auto;
     }

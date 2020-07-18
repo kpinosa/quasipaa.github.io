@@ -15,7 +15,7 @@
             <Button 
                 name="查看详情"
                 @click="blink(index != null ? values[index] : false)"
-            />
+            ></Button>
             <span 
                 class="text-icon" 
                 :style="{opacity: index != null ? 1 : 0}"
@@ -102,7 +102,8 @@
         </div>
         <div class="blogs">
             <div 
-                class="line" v-for="v of [20, 40, 60, 80]" 
+                class="line" 
+                v-for="v of [20, 40, 60, 80]" 
                 :style="{
                     left: v + '%'
                 }"
@@ -120,7 +121,7 @@
                         v-for="value of values" 
                         :key="value.index"
                         @click="blink(value)"
-                        @mouseover="value.lock = true" 
+                        @mouseover="value.lock = true"
                         @mouseout="value.lock = false"
                     >
                         <div 
@@ -129,10 +130,10 @@
                                 backgroundImage: 'url(' + value.avatar + ')'
                             }"
                         />
-                        <SuperText 
-                            class="title" 
-                            :lock="value.lock"
-                        >{{ value.title }}</SuperText>
+                        <p 
+                            class="title strikethrough" 
+                            :class="value.lock ? 'lock' : null"
+                        >{{ value.title }}</p>
                         <div class="flag">{{ value.label.join(', ') }}</div>
                         <div class="date">{{ (new Date(value.updatedAt)).toLocaleString() }}</div>
                     </div>
@@ -145,15 +146,13 @@
 <script>
     import Avatar from "@/assets/avatar.jpg"
     import Button from "@/components/button.vue"
-    import SuperText from "@/components/superText.vue"
     import Delay from "@/delay.js"
     
     // @Vue
     export default {
         name: "Home",
         components: {
-            Button,
-            SuperText
+            Button
         },
         data() {
             return {
@@ -165,7 +164,8 @@
                 text: "什么都不会，什么都搞点",
                 detil: "软件工程师",
                 name: "Mr.Panda",
-                values: []
+                values: [],
+                delta: 0
             }
         },
         computed: {
@@ -212,13 +212,18 @@
             
             // banner滚轮
             BannerWheel({ deltaY }) {
-                deltaY > 0 ? this.ArrowRight() : this.ArrowLeft()
+                this.delta += deltaY < 0 ? 
+                    deltaY * -1 : deltaY
+                if (this.delta < 400) return false
+                deltaY > 0 ? this.ArrowRight() : 
+                    this.ArrowLeft()
+                this.delta = 0
             }
         },
         async mounted() {
             void await Delay()
             this.values = (await this.$issues.initialize())
-                .map(x => ({...x, lock: false}))
+                .map(x => ({ ...x, lock: false }))
             this.$store.commit("ready")
         }
     }
@@ -263,7 +268,7 @@
     .home .banner .info {
         position: absolute;
         max-width: 60%;
-        color: #555;
+        color: #fff;
         left: 160px;
         top: 35%;
     }
@@ -309,11 +314,11 @@
     }
 
     .home .bottom-list .select {
+        border: 1px solid rgba(0, 0, 0, 0.1);
         transition: 0.3s;
         height: 50px;
         width: 52px;
         position: relative;
-        border: 1px solid rgba(0,0,0,0.1);
         margin-right: 42px;
         margin-top: 50px;
         display: table;
@@ -447,8 +452,8 @@
     .home .blogs {
         position: fixed;
         height: 100%;
-        border-left: 1px solid #eee;
-        border-right: 1px solid #eee;
+        border-left: 1px solid rgba(0, 0, 0, 0.1);
+        border-right: 1px solid rgba(0, 0, 0, 0.1);
         left: 175px;
         right: 175px;
         top: 0;
@@ -464,7 +469,7 @@
     }
 
     .home .blogs .line {
-        border-right: 1px solid #eee;
+        border-right: 1px solid rgba(0, 0, 0, 0.1);
         position: absolute;
         height: 100%;
         top: 0;
@@ -491,6 +496,7 @@
     }
 
     .home .blogs .body .item .title {
+        position: relative;
         overflow: hidden;
         text-overflow: ellipsis;
         white-space: nowrap;
@@ -499,6 +505,10 @@
         margin-top: 20px;
         font-weight: bold;
         color: #000;
+    }
+    
+    .home .blogs .body .item .lock:after {
+        width: 100%;
     }
 
     .home .blogs .body .item .flag {

@@ -44,6 +44,7 @@
 
     a {
         text-decoration: none;
+        vertical-align: baseline;
     }
 
     input, select {
@@ -71,5 +72,21 @@
 
     .disable {
         filter: grayscale(100%);
+    }
+    
+    .strikethrough:after {
+        transition: all .2s cubic-bezier(.15,.9,.34,.95);
+        background-color: #000;
+        position: absolute;
+        height: 2px;
+        display: block;
+        content: '';
+        top: 45%;
+        left: 0;
+        width: 0;
+    }
+    
+    .strikethrough:hover:after {
+        width: 100%;
     }
 </style>

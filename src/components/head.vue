@@ -6,23 +6,15 @@
             opacity: ready ? 1 : 0
         }"
     >
-        <div 
-            class="logo mhover"
-            @mouseover="lock = true" 
-            @mouseout="lock = false"
-        >
-            <SuperText 
-                top="50%"
-                :lock="lock"
-            >
-                <img 
-                    src="@/assets/logo.png"
-                    @click="$router.push('/')"
-                />
-            </SuperText>
+        <div class="logo mhover strikethrough">
+            <img 
+                src="@/assets/logo.png"
+                @click="$router.push('/')"
+            />
         </div>
         <a 
-            class="link mhover" 
+            target="_blank"
+            class="link mhover"
             href="https://github.com/quasipaa"
         >
             <span>GITHUB</span>
@@ -32,19 +24,8 @@
 </template>
 
 <script>
-    import SuperText from "@/components/superText.vue"
-    
-    // @Vue
     export default {
         name: "Head",
-        components: {
-            SuperText
-        },
-        data() {
-            return {
-                lock: false
-            }
-        },
         computed: {
             loading() { return this.$store.state.loading },
             ready() { return this.$store.state.ready }
@@ -60,8 +41,13 @@
     }
 
     .head .logo {
+        position: relative;
         margin-left: 80px;
         float: left;
+    }
+    
+    .head .logo:after {
+        top: 50%;
     }
 
     .head .logo img {

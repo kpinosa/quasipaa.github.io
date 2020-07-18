@@ -58,6 +58,16 @@ export function Item(number) {
     }}`)
 }
 
+// 仓库列表
+// @returns {String}
+export function Reop() {
+    return (`query {viewer {repositories(last: 30) {
+        nodes {name,description,url,stargazers(last: 100) {
+            nodes {id}
+        }}
+    }}}`)
+}
+
 // 问题类
 // @class
 export class Issues {
@@ -137,4 +147,11 @@ export class Issues {
 export async function Issue(number) {
     let res = await call(Item(number))
     return res.repository.issue
+}
+
+// 获取仓库列表
+// @returns {Reop[]}
+export async function Reops(number) {
+    let res = await call(Reop(number))
+    return res.viewer.repositories.nodes
 }
