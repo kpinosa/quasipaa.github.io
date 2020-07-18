@@ -10,7 +10,7 @@ const BUILD_CONFIG = {
     publicPath: "/",
     outputDir: "./dist",
     indexPath: "index.html",
-    filenameHashing: true,
+    filenameHashing: false,
     productionSourceMap: false,
     assetsDir: "static"
 }

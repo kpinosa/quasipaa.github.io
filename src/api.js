@@ -62,6 +62,7 @@ export function Item(number) {
 // @class
 export class Issues {
     constructor() {
+        this._map = new Map()
         this._isNext = true
         this._isPrevious = false
         this._startCursor = null
@@ -74,7 +75,11 @@ export class Issues {
     // @param {String} query graphql
     // @returns {Array<Issue>}
     async _fetch(query) {
-        let data = await call(query)
+        let data = this._map.has(query) ? 
+            this._map.get(query) : 
+            await call(query)
+        !this._map.has(query) && 
+            this._map.set(query, data)
         let page = data.repository.issues.pageInfo
         let values = data.repository.issues.edges
         this._isPrevious = page.hasPreviousPage

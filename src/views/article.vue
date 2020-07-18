@@ -71,6 +71,7 @@
         font-weight: 500;
         line-height: 1.25;
         font-family: FMMedium;
+        margin-bottom: 20px;
     }
     
     .article .markdown .date {

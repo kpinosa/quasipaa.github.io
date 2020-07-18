@@ -5,9 +5,8 @@ import VueRouter from "vue-router"
 import App from "./app.vue"
 import router from "./router.js"
 import store from "./store.js"
-import Axios from "./lib/axios.js"
 import * as util from "./lib/util.js"
-import EventEmitter from "./lib/events.js"
+import "./assets/animate.css"
 
 import { faAt } from "@fortawesome/free-solid-svg-icons"
 import { faGithub, faFacebook, faQq, faTelegram } from "@fortawesome/free-brands-svg-icons"
@@ -21,8 +20,6 @@ library.add(
 )
 
 Vue.config.productionTip = false
-Vue.prototype.$events = new EventEmitter()
-Vue.prototype.$axios = new Axios(Vue.prototype.$events)
 Vue.prototype.$markdown = new Markdown()
 Vue.prototype.$util = util
 

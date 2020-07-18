@@ -1,22 +1,25 @@
 <template>
     <div class="home">
         <div 
+            ref="banner"
             class="banner uncopy"
             @mouseover="bannerMouse = true" 
-            @mouseout="bannerMouse = false" 
+            @mouseout="bannerMouse = false"
+            @wheel="BannerWheel"
             :style="{
-                opacity: iter ? 0 : 1,
+                opacity: !ready || iter ? 0 : 1,
                 backgroundImage: background(),
-                zIndex: iter ? -10 : 10
+                zIndex: iter ? 0 : 10
             }"
         >
             <Button 
                 name="查看详情"
-                @click="blink(values[index])"
+                @click="blink(index != null ? values[index] : false)"
             />
             <span 
                 class="text-icon" 
-                v-for="(v, i) of 'PANDA'.split('')" 
+                :style="{opacity: index != null ? 1 : 0}"
+                v-for="(v, i) of 'PANDA'.split('')"
                 :class="i == 4 ? 'AX': v" 
                 :key="i"
             >{{ v }}</span>
@@ -43,7 +46,12 @@
                 <h5>{{ index == null ? text : values[index].paragraph }}</h5>
             </div>
         </div>
-        <div class="bottom-list">
+        <div 
+            class="bottom-list"
+            :style="{
+                opacity: ready ? 1 : 0        
+            }"
+        >
             <div 
                 :id="iter ? 'square' : 'round'" 
                 class="select mhover uncopy" 
@@ -139,6 +147,7 @@
     import Button from "@/components/button.vue"
     import SuperText from "@/components/superText.vue"
     import { Issues } from "@/api.js"
+    import Delay from "@/delay.js"
     
     // @Vue
     export default {
@@ -160,6 +169,10 @@
                 name: "Mr.Panda",
                 values: []
             }
+        },
+        computed: {
+            loading() { return this.$store.state.loading },
+            ready() { return this.$store.state.ready }
         },
         methods: {
             
@@ -194,20 +207,28 @@
             
             // 跳转
             blink(value) {
-                this.$router.push("/article/" + value.number)
-                this.$store.getters.next(value)
+                !value && this.$router.push("/author")
+                value && this.$router.push("/article/" + value.number)
+                value && this.$store.getters.next(value)
+            },
+            
+            // banner滚轮
+            BannerWheel({ deltaY }) {
+                deltaY > 0 ? this.ArrowRight() : this.ArrowLeft()
             }
         },
         async mounted() {
-            this.values = (await this.issue
-                .initialize()).map(x => ({...x, lock: false}))
+            void await Delay()
+            this.values = (await this.issue.initialize())
+                .map(x => ({...x, lock: false}))
+            this.$store.commit("ready")
         }
     }
 </script>
 
 <style>
     .home .banner {
-        transition: all .3s cubic-bezier(.15,.9,.34,.95);
+        transition: all .5s cubic-bezier(.15,.9,.34,.95);
         background-position: 50%;
         background-size: cover;
         background-color: #848484;
@@ -268,6 +289,7 @@
     }
 
     .home .banner .text-icon {
+        transition: all .3s cubic-bezier(.15,.9,.34,.95);
         position: absolute;
         font-weight: bold;
         font-size: 70px;

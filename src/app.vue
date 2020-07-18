@@ -1,18 +1,21 @@
 <template>
     <div class="App">
         <Head/>
+        <Loading/>
         <router-view/>
     </div>
 </template>
 
 <script>
     import Head from "@/components/head.vue"
+    import Loading from "@/components/loading.vue"
     
     // @Vue
     export default {
         name: "App",
         components: {
-            Head
+            Head,
+            Loading
         }
     }
 </script>

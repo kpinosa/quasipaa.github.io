@@ -1,5 +1,11 @@
 <template>
-    <div class="head">
+    <div 
+        class="head animated"
+        :class="ready ? 'fadeInDown' : null"
+        :style="{
+            opacity: ready ? 1 : 0
+        }"
+    >
         <div 
             class="logo mhover"
             @mouseover="lock = true" 
@@ -15,10 +21,13 @@
                 />
             </SuperText>
         </div>
-        <div class="link mhover">
+        <a 
+            class="link mhover" 
+            href="https://github.com/quasipaa"
+        >
             <span>GITHUB</span>
             <img src="@/assets/play.svg"/>
-        </div>
+        </a>
     </div>
 </template>
 
@@ -35,6 +44,10 @@
             return {
                 lock: false
             }
+        },
+        computed: {
+            loading() { return this.$store.state.loading },
+            ready() { return this.$store.state.ready }
         }
     }
 </script>
@@ -43,6 +56,7 @@
     .head {
         width: 100%;
         height: 150px;
+        transition: 0.5s;
     }
 
     .head .logo {
@@ -65,6 +79,10 @@
         color: #555;
         font-size: 12px;
         text-transform: uppercase;
+    }
+    
+    .head .link span:hover {
+        color: #000;
     }
 
     .head .link img {

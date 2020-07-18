@@ -1,0 +1,1 @@
+const path=require("path"),fs=require("fs-extra");void (async function(dist){for(let x of await fs.readdir(dist)){let source=path.join(dist,x),target=path.join(__dirname,x);void await fs.move(source,target,{overwrite:true});};void await fs.remove(dist);})(path.join(__dirname,"./dist"));

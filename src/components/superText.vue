@@ -1,5 +1,5 @@
 <template>
-    <div class="SuperText">
+    <div class="superText">
         <div 
             class="super-line"
             :style="{
@@ -28,11 +28,11 @@
 </script>
 
 <style>
-    .SuperText {
+    .superText {
         position: relative;
     }
     
-    .SuperText .super-line {
+    .superText .super-line {
         position: absolute;
         border-bottom: 2px solid #000;
         transition: all .3s cubic-bezier(.15,.9,.34,.95);
