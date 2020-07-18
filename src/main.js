@@ -6,6 +6,7 @@ import App from "./app.vue"
 import router from "./router.js"
 import store from "./store.js"
 import * as util from "./lib/util.js"
+import { Issues } from "@/api.js"
 import "./assets/animate.css"
 
 import { faAt } from "@fortawesome/free-solid-svg-icons"
@@ -21,6 +22,7 @@ library.add(
 
 Vue.config.productionTip = false
 Vue.prototype.$markdown = new Markdown()
+Vue.prototype.$issues = new Issues()
 Vue.prototype.$util = util
 
 Vue.component("Icon", FontAwesomeIcon)

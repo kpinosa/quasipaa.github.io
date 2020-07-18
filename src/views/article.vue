@@ -69,7 +69,7 @@
     .article .markdown .title {
         font-size: 2.5em;
         font-weight: 500;
-        line-height: 1.25;
+        line-height: 1;
         font-family: FMMedium;
         margin-bottom: 20px;
     }
@@ -114,12 +114,13 @@
         font-weight: inherit;
         font-size: 1.5rem;
         margin-top: 20px;
+        margin-bottom: 10px;
         font-family: FMMedium;
         color: #24292e;
     }
     
     .article .markdown p {
-        margin-top: 10px;
+        margin-top: 5px;
         color: #555;
     }
 </style>

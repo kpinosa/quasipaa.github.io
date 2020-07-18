@@ -146,7 +146,6 @@
     import Avatar from "@/assets/avatar.jpg"
     import Button from "@/components/button.vue"
     import SuperText from "@/components/superText.vue"
-    import { Issues } from "@/api.js"
     import Delay from "@/delay.js"
     
     // @Vue
@@ -162,7 +161,6 @@
                 iter: false,
                 avatar: Avatar,
                 bannerMouse: false,
-                issue: new Issues(),
                 state: ["文章列表", "返回首页"],
                 text: "什么都不会，什么都搞点",
                 detil: "软件工程师",
@@ -219,7 +217,7 @@
         },
         async mounted() {
             void await Delay()
-            this.values = (await this.issue.initialize())
+            this.values = (await this.$issues.initialize())
                 .map(x => ({...x, lock: false}))
             this.$store.commit("ready")
         }

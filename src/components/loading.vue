@@ -1,5 +1,6 @@
 <template>
     <div 
+        v-show="show"
         class="loading"
         :style="{
             zIndex: ready ? -100 : 100,
@@ -25,7 +26,8 @@
         name: "Loading",
         data() {
             return {
-                width: 0
+                width: 0,
+                show: true
             }  
         },
         computed: {
@@ -38,9 +40,14 @@
             }  
         },
         mounted() {
-            setTimeout(() => {
-                this.width = this.width + 50
-            }, 500)
+            if (this.$router.history.current.path !== "/") {
+                this.$store.commit("firstReady")
+                this.show = false
+            } else {
+                setTimeout(() => {
+                    this.width = this.width + 50
+                }, 500)
+            }
         }
     }
 </script>
