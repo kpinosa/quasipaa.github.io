@@ -4,19 +4,24 @@
             ref="markdown"
             class="markdown" 
             v-html="render(body)"
+            :style="{opacity}"
         />
     </div>
 </template>
 
 <script>
-    import { Issue } from "@/api.js"
-    
-    // @Vue
     export default {
         name: "Article",
+        data() {
+            return {
+                opacity: 0      
+            }
+        },
         computed: {
             body() { return this.$store.state.body },
             title() { return this.$store.state.title },
+            labels() { return this.$store.state.labels },
+            comments() { return this.$store.state.comments },
             updatedAt() { return (new Date(this.$store.state.updatedAt)).toDateString() }
         },
         methods: {
@@ -26,11 +31,8 @@
                 let target = ""
                 if (markdown == "") return ""
                 let source = this.$markdown.render(markdown)
+                let label = this.labels.map(x => `<span>${x}</span>`)
                 let node = source.match(/<img.*?src="(.*?)".*?\/?>/g)[0]
-                let label = markdown.match(/\*([\s\S]*?)[\r\n]/g)[0]
-                    .split("*")[1].replace(/\s/g, "").split(",")
-                    .map(x => x.replace(/`/g, ""))
-                    .map(x => `<span>${x}</span>`)
                 source = source.replace(/<ul(([\s\S])*?)<\/ul>/, "")
                 target += `<div class="title">${this.title}</div>`
                 target += `<div class="date">${this.updatedAt}</div>`
@@ -42,8 +44,9 @@
             }
         },
         created() {
-            Issue(this.$router.history.current.params.id).then(x => {
-               this.$store.getters.next(x)
+            this.$api.issue(this.$router.history.current.params.id).then(x => {
+                this.$store.getters.next(x)
+                this.opacity = 1
             })
         }
     }
@@ -60,6 +63,7 @@
     }
     
     .article .markdown {
+        transition: all .5s cubic-bezier(.15,.9,.34,.95);
         border-left: 1px solid rgba(0, 0, 0, 0.1);
         border-right: 1px solid rgba(0, 0, 0, 0.1);
         padding: 60px 30px;
@@ -72,7 +76,7 @@
         font-weight: 500;
         line-height: 1;
         font-family: FMMedium;
-        margin-bottom: 20px;
+        margin-bottom: 10px;
     }
     
     .article .markdown .date {

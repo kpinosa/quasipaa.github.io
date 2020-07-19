@@ -3,6 +3,7 @@ export default function(Vuex) {
         state: {
             body: "",
             title: "",
+            labels: [],
             updatedAt: "",
             loading: false,
             ready: false
@@ -10,7 +11,7 @@ export default function(Vuex) {
         mutations: {
 
             // 正常加载完成
-            ready(state) {
+            ready: function(state) {
                 state.loading = true
                 setTimeout(() => {
                     state.ready = true
@@ -18,7 +19,7 @@ export default function(Vuex) {
             },
 
             // 快速加载完成
-            firstReady(state) {
+            firstReady: function(state) {
                 state.loading = true
                 state.ready = true
             }
@@ -26,10 +27,13 @@ export default function(Vuex) {
         getters: {
 
             // 选中博客更新
-            next: (state) => (value) => {
-                state.body = value.body
-                state.title = value.title
-                state.updatedAt = value.updatedAt
+            next: function (state) {
+                return function (article) {
+                    state.updatedAt = article.updatedAt
+                    state.labels = article.labels
+                    state.title = article.title
+                    state.body = article.body
+                }
             }
         }
     })

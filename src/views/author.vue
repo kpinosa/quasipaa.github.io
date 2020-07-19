@@ -87,7 +87,7 @@
                                 target="_blank"
                             >
                                 <span class="name">{{ value.name }}</span>
-                                <span class="star">- ({{ value.stargazers.nodes.length }}) -</span>
+                                <span class="star">(star: {{ value.stargazers.nodes.length }})</span>
                                 <span class="description">{{ value.description }}</span>
                             </a>
                         </li>
@@ -104,9 +104,6 @@
 </template>
 
 <script>
-    import { Reops } from "@/api.js"
-    
-    // @Vue
     export default {
         name: "Author",
         data() {
@@ -115,7 +112,7 @@
             }  
         },
         async mounted() {
-            this.reops = await Reops()
+            this.reops = await this.$api.repos()
         }
     }
 </script>
@@ -180,7 +177,6 @@
     }
     
     .author .body .value .language {
-        text-transform: uppercase;
         margin-bottom: 40px;
         margin-left: 10%;
         margin-top: 15px;
@@ -230,7 +226,6 @@
     }
     
     .author .body .value .company {
-        text-transform: uppercase;
         margin-left: 10%;
         margin-top: 15px;
     }
@@ -257,17 +252,13 @@
     }
     
     .author .body .value .repositories .item * {
-        font-size: 0.9em;
-        line-height: 1.5em;
+        font-size: .688em;
+        line-height: 1.7em;
         color: #000;
     }
     
     .author .body .value .repositories .item a {
         position: relative;   
-    }
-    
-    .author .body .value .repositories .item .name {
-        text-transform: uppercase;
     }
     
     .author .body .value .repositories .item .name,

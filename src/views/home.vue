@@ -37,20 +37,16 @@
             />
             <div 
                 class="info" 
-                :style="{
-                    color: index == null ? null : '#000'
-                }"
+                :style="{color: index == null ? null : '#000'}"
             >
                 <p>{{ index == null ? name : values[index].title }}</p>
-                <span>{{ index == null ? detil : values[index].label.join(' | ') }}</span>
+                <span>{{ index == null ? detil : values[index].labels.join(' | ') }}</span>
                 <h5>{{ index == null ? text : values[index].paragraph }}</h5>
             </div>
         </div>
         <div 
             class="bottom-list"
-            :style="{
-                opacity: ready ? 1 : 0        
-            }"
+            :style="{opacity: ready ? 1 : 0}"
         >
             <div 
                 :id="iter ? 'square' : 'round'" 
@@ -83,17 +79,17 @@
                         >
                             <span 
                                 class="index" 
-                                :style="{
-                                    color: (index != null && v.index == values[index].index) ? 
-                                        '#FF0000': null
-                                }"
+                                :style="{color: 
+                                    index != null && 
+                                    v.index == values[index].index ? 
+                                    '#FF0000': null}"
                             >{{ String(v.index).padStart(4, '0') }}</span>
                             <span 
                                 class="name" 
-                                :style="{
-                                    color: (index != null && v.index == values[index].index) ? 
-                                        '#000': null
-                                }"
+                                :style="{color: 
+                                    index != null && 
+                                    v.index == values[index].index ? 
+                                    '#000': null}"
                             >{{ v.title }}</span>
                         </div>
                     </div>
@@ -134,7 +130,7 @@
                             class="title strikethrough" 
                             :class="value.lock ? 'lock' : null"
                         >{{ value.title }}</p>
-                        <div class="flag">{{ value.label.join(', ') }}</div>
+                        <div class="flag">{{ value.labels.join(', ') }}</div>
                         <div class="date">{{ (new Date(value.updatedAt)).toLocaleString() }}</div>
                     </div>
                 </div>
@@ -222,7 +218,7 @@
         },
         async mounted() {
             void await Delay()
-            this.values = (await this.$issues.initialize())
+            this.values = (await this.$api.initialize())
                 .map(x => ({ ...x, lock: false }))
             this.$store.commit("ready")
         }
@@ -274,12 +270,13 @@
     }
 
     .home .banner .info p {
+        text-transform: uppercase;
         font-weight: bold;
         font-size: 2.3rem;
-        text-transform: uppercase;
     }
 
     .home .banner .info span {
+        text-transform: uppercase;
         font-weight: bold;
         font-size: 1.2rem;
         margin-top: 10px;
